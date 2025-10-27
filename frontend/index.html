@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Video Downloader</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎥 Universal Video Downloader</h1>
+            <p class="subtitle">Laden Sie Videos von über 1000+ Plattformen herunter</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="videoUrl" 
+                        placeholder="Video-URL hier einfügen (z.B. YouTube, Vimeo, etc.)" 
+                        autocomplete="off"
+                    >
+                    <button id="extractBtn" class="btn-primary">
+                        <span class="btn-icon">🔍</span>
+                        Analysieren
+                    </button>
+                </div>
+                <p class="hint">
+                    Unterstützte Plattformen: YouTube, Vimeo, Dailymotion, TikTok, Instagram, Twitter, und viele mehr...
+                </p>
+            </div>
+
+            <!-- Loader -->
+            <div id="loader" class="loader" style="display: none;">
+                <div class="spinner"></div>
+                <p id="loaderText">Video wird analysiert...</p>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+            <!-- Notification -->
+            <div id="notification" class="notification" style="display: none;"></div>
+
+            <!-- Video Info -->
+            <div id="videoInfo" class="video-info"></div>
+        </main>
+
+        <footer>
+            <p>
+                Powered by <a href="https://github.com/yt-dlp/yt-dlp" target="_blank">yt-dlp</a> | 
+                <a href="https://github.com/UnknownEngineOfficial/Universial-Video-Downloader" target="_blank">GitHub</a>
+            </p>
+        </footer>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

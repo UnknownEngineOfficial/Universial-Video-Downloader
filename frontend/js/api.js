@@ -8,7 +8,7 @@ class VideoAPI {
      */
     static async extractVideo(url) {
         try {
-            const response = await fetch(`${API_BASE_URL}/extract`, {
+            const response = await fetch(`${API_BASE_URL}/info/extract`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
