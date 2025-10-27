@@ -2,18 +2,26 @@ version: '3.8'
 
 services:
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: video-downloader-backend
     ports:
       - "8000:8000"
     environment:
       - API_HOST=0.0.0.0
       - API_PORT=8000
+      - DEBUG=True
+      - CORS_ORIGINS=http://localhost,http://localhost:80,http://localhost:3000
     volumes:
       - ./backend:/app
     restart: unless-stopped
-    
+    networks:
+      - video-downloader-net
+
   nginx:
     image: nginx:alpine
+    container_name: video-downloader-nginx
     ports:
       - "80:80"
     volumes:
@@ -22,3 +30,9 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+    networks:
+      - video-downloader-net
+
+networks:
+  video-downloader-net:
+    driver: bridge
