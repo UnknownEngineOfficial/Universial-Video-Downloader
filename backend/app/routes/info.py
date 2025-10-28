@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 import yt_dlp
 from app.models import ExtractRequest, VideoInfo, VideoFormat
-from app.utils.logger import logger
-from app.utils.validators import validate_url
+from utils.logger import logger
+from utils.validators import validate_url
 
 router = APIRouter()
 
@@ -27,6 +27,9 @@ async def extract_video_info(request: ExtractRequest):
     logger.info(f"Extracting info from: {url}")
     
     try:
+        # Import settings here to avoid circular imports
+        from app.config import settings
+        
         ydl_opts = {
             'quiet': True,
             'no_warnings': True,
@@ -34,6 +37,21 @@ async def extract_video_info(request: ExtractRequest):
             'format': 'best',
             'nocheckcertificate': True,
         }
+        
+        # Add cookies file if configured
+        if settings.youtube_cookies_file:
+            ydl_opts['cookiefile'] = settings.youtube_cookies_file
+        
+        # Add cookies from browser if configured
+        if settings.youtube_cookies_from_browser:
+            ydl_opts['cookiesfrombrowser'] = (
+                settings.youtube_cookies_from_browser,
+                settings.youtube_cookies_browser_profile
+            ) if settings.youtube_cookies_browser_profile else settings.youtube_cookies_from_browser
+            
+        # Add proxy if configured
+        if settings.youtube_proxy:
+            ydl_opts['proxy'] = settings.youtube_proxy
         
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)

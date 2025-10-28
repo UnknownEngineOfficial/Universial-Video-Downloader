@@ -1,4 +1,7 @@
-const API_BASE_URL = 'http://localhost:8000/api';
+// Use a relative API base by default so requests are sent to the same origin
+// (e.g. when frontend is served by nginx at http://localhost that proxies /api/ to backend).
+// This avoids cross-origin requests which often lead to "NetworkError when attempting to fetch resource." in the browser.
+const API_BASE_URL = (window.__API_BASE_URL__ && typeof window.__API_BASE_URL__ === 'string') ? window.__API_BASE_URL__ : '/api';
 
 class VideoAPI {
     /**
@@ -17,13 +20,27 @@ class VideoAPI {
             });
             
             if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.detail || error.message || 'Extraction failed');
+                // try to include server error details if available
+                let errText = `HTTP ${response.status}`;
+                try {
+                    const errBody = await response.json();
+                    errText = errBody.detail || errBody.message || JSON.stringify(errBody);
+                } catch (e) {
+                    try {
+                        const txt = await response.text();
+                        if (txt) errText = txt;
+                    } catch(_){}
+                }
+                throw new Error(errText || 'Extraction failed');
             }
-            
+
             return await response.json();
         } catch (error) {
+            // NetworkErrors (CORS, no backend) will show up here — include helpful hint
             console.error('API Error:', error);
+            if (error instanceof TypeError) {
+                console.error('TypeError likely indicates network/CORS issue or backend not reachable. Ensure backend is running and /api is proxied by nginx or API_BASE_URL is reachable.');
+            }
             throw error;
         }
     }

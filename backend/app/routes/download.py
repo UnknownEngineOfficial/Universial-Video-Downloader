@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import RedirectResponse
 import yt_dlp
-from app.utils.logger import logger
-from app.utils.validators import validate_url
+from utils.logger import logger
+from utils.validators import validate_url
 
 router = APIRouter()
 
@@ -29,11 +29,29 @@ async def download_direct(
     logger.info(f"Getting download link for: {url}")
     
     try:
+        # Import settings here to avoid circular imports
+        from app.config import settings
+        
         ydl_opts = {
             'quiet': True,
             'no_warnings': True,
             'nocheckcertificate': True,
         }
+        
+        # Add cookies file if configured
+        if settings.youtube_cookies_file:
+            ydl_opts['cookiefile'] = settings.youtube_cookies_file
+            
+        # Add cookies from browser if configured
+        if settings.youtube_cookies_from_browser:
+            ydl_opts['cookiesfrombrowser'] = (
+                settings.youtube_cookies_from_browser,
+                settings.youtube_cookies_browser_profile
+            ) if settings.youtube_cookies_browser_profile else settings.youtube_cookies_from_browser
+            
+        # Add proxy if configured
+        if settings.youtube_proxy:
+            ydl_opts['proxy'] = settings.youtube_proxy
         
         if format_id:
             ydl_opts['format'] = format_id

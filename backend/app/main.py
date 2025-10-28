@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 import yt_dlp
 from app.config import settings
 from app.models import HealthResponse
-from app.utils.logger import logger
+from utils.logger import logger
 from app.routes import api_router
 
 app = FastAPI(

@@ -149,6 +149,12 @@ video-downloader/
 - Docker & Docker Compose
 - Nginx (Reverse Proxy)
 
+## 🍪 YouTube-Cookies
+
+Einige YouTube-Videos erfordern eine Anmeldung, um sicherzustellen, dass der Benutzer kein Bot ist. Um dieses Problem zu umgehen, können Sie Cookies von einem angemeldeten YouTube-Konto verwenden.
+
+Weitere Informationen finden Sie in der [YouTube Cookies Anleitung](YOUTUBE_COOKIES.md).
+
 ## 📡 API Endpunkte
 
 ### Health Check
@@ -216,6 +222,12 @@ cd frontend
 # Öffne index.html im Browser oder nutze einen lokalen Server
 python -m http.server 3000
 ```
+
+## ⚠️ Bekannte Probleme
+
+### YouTube "Sign in to confirm you're not a bot"
+
+Einige YouTube-Videos erfordern eine Anmeldung, um sicherzustellen, dass der Benutzer kein Bot ist. Um dieses Problem zu umgehen, können Sie Cookies von einem angemeldeten YouTube-Konto verwenden. Weitere Informationen finden Sie in der [YouTube Cookies Anleitung](YOUTUBE_COOKIES.md).
 
 ## 📝 Unterstützte Plattformen (Auswahl)
 
